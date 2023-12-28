@@ -1,0 +1,25 @@
+*{margin: 0;padding: 0;}
+body{background-color: #F4FFF8;}
+.searchBar{
+    flex-grow: 1;
+    display: flex;
+    padding: 2vw;
+    gap: 0.4vw;
+    align-items: center;
+}
+.searchBox{
+    border-radius: 50px;
+    flex-grow: 1;
+    height: 4.4vh;
+    padding: 0vh 1vw;
+    font-size: medium;
+}
+.listItems{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-content: space-between;
+}
+.TextField .MuiTextField{
+    font-weight: 900;
+}
