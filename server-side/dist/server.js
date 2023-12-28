@@ -17,20 +17,25 @@ import cors from "cors";
 import { Course, User } from "./db/serverDatabase.js";
 import Stripe from "stripe";
 dotenv.config();
-mongoose.connect(`mongodb+srv://pulkitkakkar6:Pinternational1@cluster0.dypwgt2.mongodb.net/?retryWrites=true&w=majority`, { dbName: "Course-Selling" });
+const mongoUrl = process.env.MONGO_URL;
+const dbName = process.env.DB_NAME;
 const stripeKey = process.env.STRIPE_SECRET_KEY;
-const stripe = new Stripe("sk_test_51Nm248JaKrI2aUZQIIS2TlnTuIEevxTY94fyLZAxCK4lXMZfXwVvwOSK9VARegDDAjTtx4ddQtlLonacrYzPqc5N00Xs9tQMXO", {
+const clientUrl = process.env.CLIENT_URL;
+const stripeSecret2 = process.env.STRIPE_SECRET_2;
+const apiPort = Number(process.env.PORT);
+mongoose.connect(mongoUrl, { dbName });
+const stripe = new Stripe(stripeKey, {
     apiVersion: "2023-08-16",
 });
 const app = express();
-//app.use(cors({origin:"http://localhost:5173"}));
+// app.use(cors({origin:clientUrl}));
 app.use(cors());
 app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Webhook call");
     const sig = req.headers["stripe-signature"];
     let event;
     try {
-        event = stripe.webhooks.constructEvent(req.body, sig, "whsec_0890b5ae817da99a413e847d849e292a28e2aeef32823b5b9bdb107d291f58d1");
+        event = stripe.webhooks.constructEvent(req.body, sig, stripeSecret2);
         console.log("Event created");
     }
     catch (err) {
@@ -46,7 +51,6 @@ app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), 
                 const session = event.data.object;
                 console.log("In try");
                 console.log(session.id);
-                //const sessionRetrived = await stripe.checkout.sessions.retrieve(session.id);
                 try {
                     const x = yield stripe.checkout.sessions.retrieve(session.id);
                     console.log(x);
@@ -80,12 +84,10 @@ app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), 
                 res.sendStatus(500);
                 return;
             }
-        // ... handle other event types
         default:
             console.log(`Unhandled event type ${event.type}`);
             res.sendStatus(500);
     }
-    // Return a 200 res to acknowledge receipt of the event
 }));
 app.use(bodyParser.json());
 app.use("/admin", adminsRouter);
@@ -113,6 +115,6 @@ app.get("/course/:courseId", (req, res, next) => __awaiter(void 0, void 0, void 
         next(error);
     }
 }));
-app.listen(3000, () => {
-    console.log("Listening at http://localhost:3000");
+app.listen(apiPort, () => {
+    console.log("Listening at http://localhost:" + apiPort);
 });
