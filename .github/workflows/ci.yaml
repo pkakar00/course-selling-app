@@ -10,7 +10,8 @@ jobs:
       uses: actions/checkout/@v2
 
     - name: SSH and deploy
-      env: SSH_KEY: ${{secrets.SSH_KEY}}
+      env:
+        SSH_KEY: ${{secrets.SSH_KEY}}
       run: 
         echo "$SSH_KEY" > keyfile
         chmod 600 keyfile
