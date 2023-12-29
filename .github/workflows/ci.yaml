@@ -1,0 +1,19 @@
+on:
+  push:
+    branch:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout/@v2
+
+    - name: SSH and deploy
+      env: SSH_KEY: ${{secrets.SSH_KEY}}
+      run: 
+        echo "$SSH_KEY" > keyfile
+        chmod 600 keyfile
+        mkdir -p ~/.ssh
+        cp known_hosts ~/.ssh/known_hosts
+        ssh -t -i course-selling-app-key.pem ubuntu@ec2-3-15-172-164.us-east-2.compute.amazonaws.com "sudo bash ~/course-selling-app/deploy.sh"
