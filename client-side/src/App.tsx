@@ -18,7 +18,7 @@ const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
 function App() {
   const setLogin = useSetRecoilState(loggedIn);
-  const [userRole, setUserRole] = useRecoilState(role);
+  const [userRole] = useRecoilState(role);
   
   useEffect(() => {
     async function callback() {

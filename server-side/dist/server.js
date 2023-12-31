@@ -16,13 +16,23 @@ import { app as adminsRouter } from "./routes/admin.js";
 import cors from "cors";
 import { Course, User } from "./db/serverDatabase.js";
 import Stripe from "stripe";
+import path from "path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config();
 const mongoUrl = process.env.MONGO_URL;
 const dbName = process.env.DB_NAME;
 const stripeKey = process.env.STRIPE_SECRET_KEY;
-const clientUrl = process.env.CLIENT_URL;
+const clientUrl = process.env.CLIENT_DOMAIN;
 const stripeSecret2 = process.env.STRIPE_SECRET_2;
-const apiPort = Number(process.env.PORT);
+const apiPort = (process.env.PORT);
+console.log(mongoUrl);
+console.log(dbName);
+console.log(stripeKey);
+console.log(clientUrl);
+console.log(stripeSecret2);
+console.log(apiPort);
 mongoose.connect(mongoUrl, { dbName });
 const stripe = new Stripe(stripeKey, {
     apiVersion: "2023-08-16",
@@ -30,6 +40,7 @@ const stripe = new Stripe(stripeKey, {
 const app = express();
 // app.use(cors({origin:clientUrl}));
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Webhook call");
     const sig = req.headers["stripe-signature"];
@@ -115,6 +126,9 @@ app.get("/course/:courseId", (req, res, next) => __awaiter(void 0, void 0, void 
         next(error);
     }
 }));
-app.listen(apiPort, () => {
+app.use('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+app.listen(3000, () => {
     console.log("Listening at http://localhost:" + apiPort);
 });

@@ -46,7 +46,7 @@ export default function AdminNewCourse({ edit }: { edit: boolean }) {
   const [severity, setSeverity] = useState<number>(0);
   const { id } = useParams();
   const baseUrl = import.meta.env.VITE_BASE_URL as string;
-  function getSeverity(){
+  function getSeverity() {
     return severity === 200 ? "success" : "error";
   }
   useEffect(() => {
@@ -126,32 +126,29 @@ export default function AdminNewCourse({ edit }: { edit: boolean }) {
         setMessage(message.message);
       } else setMessage("Server down");
     } else {
-      const editResponse = await fetch(
-        `${baseUrl}/admin/edit-course/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            courseName,
-            teacherName,
-            courseSmallDescription: courseSmallDes,
-            numberOfStudents: 0,
-            audioLanguages: audioLang,
-            subtitleLanguages: subTitleLang,
-            objectives,
-            requirements: requirements,
-            description,
-            rating: 0,
-            courseImageLink: imageLink,
-            videos,
-            tags,
-            price,
-          }),
-        }
-      );
+      const editResponse = await fetch(`${baseUrl}/admin/edit-course/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          courseName,
+          teacherName,
+          courseSmallDescription: courseSmallDes,
+          numberOfStudents: 0,
+          audioLanguages: audioLang,
+          subtitleLanguages: subTitleLang,
+          objectives,
+          requirements: requirements,
+          description,
+          rating: 0,
+          courseImageLink: imageLink,
+          videos,
+          tags,
+          price,
+        }),
+      });
       if (editResponse.status === 200) {
         setMessage("Course Updated Succcessfully!");
       } else if (editResponse.status === 411) {
@@ -317,7 +314,17 @@ export default function AdminNewCourse({ edit }: { edit: boolean }) {
 }
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-function LanguageTags({ sx, setArray, placeholder, array }) {
+function LanguageTags({
+  sx,
+  setArray,
+  placeholder,
+  array,
+}: {
+  sx: { width: string };
+  setArray: React.Dispatch<React.SetStateAction<string[]>>;
+  placeholder: string;
+  array: string[];
+}) {
   return (
     <Autocomplete
       sx={sx}
@@ -325,7 +332,7 @@ function LanguageTags({ sx, setArray, placeholder, array }) {
       options={languages}
       value={array}
       disableCloseOnSelect
-      onChange={(a, b) => {
+      onChange={(_a, b) => {
         setArray(b);
       }}
       renderOption={(props, option, { selected }) => (
@@ -346,13 +353,23 @@ function LanguageTags({ sx, setArray, placeholder, array }) {
   );
 }
 const filter = createFilterOptions<string>();
-function FreeSoloCreateOption({ value, setValue, sx, placeholder }) {
+function FreeSoloCreateOption({
+  value,
+  setValue,
+  sx,
+  placeholder,
+}: {
+  value: string[];
+  setValue: React.Dispatch<React.SetStateAction<string[]>>;
+  sx: { width: string };
+  placeholder: string;
+}) {
   return (
     <Autocomplete
       sx={sx}
       multiple
       value={value}
-      onChange={(event, newValue) => {
+      onChange={(_event, newValue) => {
         setValue(newValue);
       }}
       filterOptions={(options, params) => {

@@ -23,6 +23,7 @@ export default function Courses() {
       if(x.isBought) return "Bought";
       else return "Buy now";
     }
+    else return "Buy now"; 
   }
   function editCourse(courseId:number){
     navigate(`/admin/edit-course/${courseId}`)
@@ -201,7 +202,8 @@ export default function Courses() {
                     onClick={(e) => {
                       e.stopPropagation();
                       if(userRole === "user") buyCourse(x._id);
-                      else editCourse(x._id);
+                      if(userRole === "admin") editCourse(x._id);
+                      else navigate("/user/login");
                     }}
                     disabled={x.isBought}
                   >

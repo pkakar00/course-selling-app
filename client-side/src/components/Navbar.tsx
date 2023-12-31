@@ -2,7 +2,7 @@ import { Avatar, Button, ButtonGroup } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import logo from "../logo2.png";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { loggedIn, popoverStatus, role, userData } from "../states/loginAtom";
 import { indigo } from "@mui/material/colors";
 import { useCallback, useRef } from "react";

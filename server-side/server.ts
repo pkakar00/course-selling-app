@@ -7,14 +7,26 @@ import { app as adminsRouter } from "./routes/admin.js";
 import cors from "cors";
 import { Course, User } from "./db/serverDatabase.js";
 import Stripe from "stripe";
+import path from "path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const mongoUrl = process.env.MONGO_URL as string;
 const dbName = process.env.DB_NAME as string;
 const stripeKey = process.env.STRIPE_SECRET_KEY as string;
-const clientUrl = process.env.CLIENT_URL as string;
+const clientUrl = process.env.CLIENT_DOMAIN as string;
 const stripeSecret2 = process.env.STRIPE_SECRET_2 as string;
-const apiPort = Number(process.env.PORT as string);
+const apiPort = (process.env.PORT);
+
+console.log(mongoUrl);
+console.log(dbName);
+console.log(stripeKey);
+console.log(clientUrl);
+console.log(stripeSecret2);
+console.log(apiPort);
+
 
 mongoose.connect(mongoUrl, { dbName });
 const stripe = new Stripe(stripeKey, {
@@ -24,6 +36,7 @@ const stripe = new Stripe(stripeKey, {
 const app = express();
 // app.use(cors({origin:clientUrl}));
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 app.post(
   "/user/payment-fulfilment",
   express.raw({ type: "application/json" }),
@@ -124,7 +137,10 @@ app.get("/course/:courseId", async (req, res, next) => {
     next(error);
   }
 });
+app.use('/*',(req,res)=>{
+  res.sendFile(path.join(__dirname, 'index.html'))
+});
 
-app.listen(apiPort, () => {
+app.listen(3000, () => {
   console.log("Listening at http://localhost:"+apiPort);
 });
