@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "nodemon server.js",
-    "start": "cd ../client-side && npm run build && rm -rf ../server-side/dist/public && mkdir -p ../server-side/dist/public && mv ./dist/* ../server-side/dist/public && cd ../server-side && tsc && node dist/server.js"
+    "start": "cd ../client-side && npm run build && rm -rf ../server-side/dist/public && mkdir -p ../server-side/dist/public && mv ./dist/* ../server-side/dist/public && cd ../server-side && node dist/server.js"
   },
   "keywords": [],
   "author": "",
