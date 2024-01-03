@@ -14,30 +14,29 @@ import AdminNewCourse from "./components/AdminNewCourse";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PaymentFailed from "./components/PaymentFailed";
 
-const baseUrl = import.meta.env.VITE_BASE_URL as string; 
+const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
 function App() {
   const setLogin = useSetRecoilState(loggedIn);
   const [userRole] = useRecoilState(role);
-  
-  useEffect(() => {
-    async function callback() {
-      console.log("Inside callback role=" + userRole);
-
-      const isLoggedIn = await fetch(
-        `${baseUrl}/${userRole}/isLoggedIn`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-
-      if (isLoggedIn.status === 200) setLogin(true);
-      else setLogin(false);
+  async function callback() {
+    console.log("Inside callback role=" + userRole);
+    if(userRole == "global") {
+      setLogin(false);
+      return;
     }
+    const isLoggedIn = await fetch(`${baseUrl}/${userRole}/isLoggedIn`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+
+    if (isLoggedIn.status === 200) setLogin(true);
+    else setLogin(false);
+  }
+  useEffect(() => {
     window.addEventListener("load", callback);
     return () => {
       window.removeEventListener("load", callback);
@@ -63,8 +62,11 @@ function App() {
         <Route path="/admin">
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
-          <Route path="course/:id" element={<DisplayCourse/>} />
-          <Route path="edit-course/:id" element={<AdminNewCourse edit={true} />} />
+          <Route path="course/:id" element={<DisplayCourse />} />
+          <Route
+            path="edit-course/:id"
+            element={<AdminNewCourse edit={true} />}
+          />
           <Route path="new-course" element={<AdminNewCourse edit={false} />} />
         </Route>
       </Routes>

@@ -41,7 +41,7 @@ const app = express();
 // app.use(cors({origin:clientUrl}));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/api/user/payment-fulfilment", express.raw({ type: "application/json" }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Webhook call");
     const sig = req.headers["stripe-signature"];
     let event;
@@ -101,9 +101,9 @@ app.post("/user/payment-fulfilment", express.raw({ type: "application/json" }), 
     }
 }));
 app.use(bodyParser.json());
-app.use("/admin", adminsRouter);
-app.use("/user", usersRouter);
-app.get("/courses", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.use("/api/admin", adminsRouter);
+app.use("/api/user", usersRouter);
+app.get("/api/courses", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const courses = yield Course.find();
         res.status(200).json(courses);
@@ -112,7 +112,7 @@ app.get("/courses", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.sendStatus(500);
     }
 }));
-app.get("/course/:courseId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/api/course/:courseId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(" cid");
     try {
         const id = req.params.courseId;
@@ -127,7 +127,7 @@ app.get("/course/:courseId", (req, res, next) => __awaiter(void 0, void 0, void 
     }
 }));
 app.use('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 app.listen(3000, () => {
     console.log("Listening at http://localhost:" + apiPort);

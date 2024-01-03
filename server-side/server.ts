@@ -38,7 +38,7 @@ const app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.post(
-  "/user/payment-fulfilment",
+  "/api/user/payment-fulfilment",
   express.raw({ type: "application/json" }),
   async (req, res) => {
     console.log("Webhook call");
@@ -115,9 +115,9 @@ app.post(
   }
 );
 app.use(bodyParser.json());
-app.use("/admin", adminsRouter);
-app.use("/user", usersRouter);
-app.get("/courses", async (req, res) => {
+app.use("/api/admin", adminsRouter);
+app.use("/api/user", usersRouter);
+app.get("/api/courses", async (req, res) => {
   try {
     const courses = await Course.find();
     res.status(200).json(courses);
@@ -125,7 +125,7 @@ app.get("/courses", async (req, res) => {
     res.sendStatus(500);
   }
 });
-app.get("/course/:courseId", async (req, res, next) => {
+app.get("/api/course/:courseId", async (req, res, next) => {
   console.log(" cid");
 
   try {
@@ -138,7 +138,7 @@ app.get("/course/:courseId", async (req, res, next) => {
   }
 });
 app.use('/*',(req,res)=>{
-  res.sendFile(path.join(__dirname, 'index.html'))
+  res.sendFile(path.join(__dirname, 'public/index.html'))
 });
 
 app.listen(3000, () => {

@@ -5,7 +5,7 @@ import logo from "../logo2.png";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loggedIn, popoverStatus, role, userData } from "../states/loginAtom";
 import { indigo } from "@mui/material/colors";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import PopoverCard from "./PopoverCard";
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,6 +17,9 @@ export default function Navbar() {
     setPopoverStatus((x) => !x);
   }, []);
   const [userRole,setUserRole]=useRecoilState(role);
+  useEffect(()=>{
+    
+  })
   
   return (
     <>

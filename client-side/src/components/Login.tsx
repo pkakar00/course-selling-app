@@ -115,7 +115,7 @@ export default function Login() {
             ></TextField>
             <br />
             Not registered? ...
-            <Link href={`http://localhost:5173/${userRole}/signup`}>
+            <Link href={`http://ec2-3-15-172-164.us-east-2.compute.amazonaws.com/${userRole}/signup`}>
               Signup Here
             </Link>
             <Button

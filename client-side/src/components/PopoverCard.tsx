@@ -96,7 +96,7 @@ export default function PopoverCard({
             width: "7vh",
           }}
         >
-          {userData.firstName.substring(0,1).toUpperCase()}
+          {userData.firstName !== "" ? userData.firstName.substring(0,1).toUpperCase() : "E"}
         </Avatar>
         <ListItemText
           sx={{ textAlign: "center", }}
