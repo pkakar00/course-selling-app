@@ -1,0 +1,29 @@
+version: 1.0.0
+services:
+  mongodb:
+    image: mongo
+    ports: 
+      - 27017:27017
+    volumes:
+      - course-app-volume:/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  course-app:
+    image: pulkitkakar/course-selling-app:1.0.0
+    ports: 
+      - 3000:3000
+    environment:
+      VITE_BASE_URL: ${VITE_BASE_URL}
+      ADMIN_SECRET: ${ADMIN_SECRET}
+      USER_SECRET: ${USER_SECRET}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      CLIENT_DOMAIN: ${CLIENT_DOMAIN}
+      MONGO_URL: ${MONGO_URL}
+      DB_NAME: "Course-Selling"
+      STRIPE_SECRET_2: ${STRIPE_SECRET_2}
+      PORT: 3000
+    depends_on:
+      - "mongodb"
+volumes:
+  course-app-volume:

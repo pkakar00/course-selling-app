@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "nodemon server.js",
+    "build": "tsc",
+    "start2": "node dist/server.js",
     "start": "cd ../client-side && npm run build && rm -rf ../server-side/dist/public && mkdir -p ../server-side/dist/public && mv ./dist/* ../server-side/dist/public && cd ../server-side && node dist/server.js"
   },
   "keywords": [],
@@ -22,6 +24,7 @@
     "mongoose": "^7.4.1",
     "nodemon": "^3.0.1",
     "stripe": "^13.4.0",
+    "typescript": "^5.3.3",
     "zod": "^3.22.0"
   },
   "devDependencies": {
